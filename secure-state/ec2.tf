@@ -4,7 +4,7 @@ resource "aws_instance" "HelloWorld_terraform_secure-state" {
   vpc_security_group_ids = local.sg_id
 
   tags = {
-    Name = "HelloWorld"
+    Name = "HelloWorldddddd"
   }
 }
 
