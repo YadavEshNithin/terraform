@@ -1,7 +1,7 @@
 resource "aws_instance" "HelloWorld_terraform" {
   ami           = "ami-09c813fb71547fc4f"
   instance_type = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.allow_all.id]
+  vpc_security_group_ids = local.sg_id
 
   tags = {
     Name = "HelloWorld"
@@ -30,6 +30,10 @@ resource "aws_security_group" "allow_all" {
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     }
+
+    # lifecycle {
+    #   create_before_destroy = true
+    # }
 
     tags = {
       Name = "allow-all"
