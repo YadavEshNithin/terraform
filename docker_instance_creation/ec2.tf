@@ -1,27 +1,14 @@
-resource "aws_instance" "HelloWorld_terraform" {
-  ami                    = "ami-09c813fb71547fc4f"
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = local.sg_id
+resource "aws_instance" "docker" {
+  ami                    = local.ami_id
+  instance_type          = "t3.medium"
+  vpc_security_group_ids = [aws_security_group.allow_all_docker.id]
 
-   provisioner "file" {
-    source      = "bootstrap.sh"
-    destination = "/tmp/bootstrap.sh"
+  root_block_device {
+    volume_size = 50
+    volume_type = "gp3" # or "gp2", depending on your preference
   }
 
-  connection {
-    type     = "ssh"
-    user     = "ec2-user"
-    password = "DevOps321"
-    host     = self.public_ip
-  }
-
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh ",
-    ]
-  }
+  user_data = file("docker.sh")
 
   tags = {
     Name = "docker_instance_terraform"
@@ -29,7 +16,7 @@ resource "aws_instance" "HelloWorld_terraform" {
 }
 
 
-resource "aws_security_group" "allow_all" {
+resource "aws_security_group" "allow_all_docker" {
   name        = "allow-all-docker-instance"
   description = "Allow TLS inbound traffic and all outbound traffic"
 
@@ -56,7 +43,7 @@ resource "aws_security_group" "allow_all" {
   # }
 
   tags = {
-    Name = "allow-all"
+    Name = "allow-all-docker"
   }
 
 }

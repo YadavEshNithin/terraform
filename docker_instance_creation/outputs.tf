@@ -1,3 +1,3 @@
-output "sg_id" {
-  value = local.sg_id
-}
+# output "sg_id" {
+#   value = local.sg_id
+# }
