@@ -1,8 +1,18 @@
+data "aws_iam_role" "docker_role" {
+  name = "Terraformadmin"  # Replace with the actual role name
+}
+
+
+resource "aws_iam_instance_profile" "example" {
+  name = "instance-profile-docker" # Replace with a name
+  role = data.aws_iam_role.docker_role.name
+}
+
 resource "aws_instance" "docker" {
   ami                    = local.ami_id
   instance_type          = "t3.medium"
   vpc_security_group_ids = [aws_security_group.allow_all_docker.id]
-
+  iam_instance_profile = aws_iam_instance_profile.example.name
   root_block_device {
     volume_size = 50
     volume_type = "gp3" # or "gp2", depending on your preference
