@@ -32,7 +32,7 @@
 
 # cd terraform/docker_instance_creation/
 
-# # eksctl create cluster --config-file=eks.yaml
+# eksctl create cluster --config-file=eks.yaml
 
 
 # ##########################
